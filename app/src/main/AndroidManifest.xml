@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,19 +14,66 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GameHubM"
         tools:targetApi="31">
+        
+        <!-- Login Activity - Entry point -->
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.GameHubM">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Signup Activity -->
+        <activity
+            android:name=".ui.login.SignupActivity"
+            android:exported="false"
+            android:label="@string/title_activity_signup"
+            android:theme="@style/Theme.GameHubM" />
+        
+        <!-- Main Activity - Home screen -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GameHubM" />
+        
+        <!-- Guess Game Activity -->
+        <activity
+            android:name=".ui.games.GuessActivity"
+            android:exported="false"
+            android:label="Guess"
+            android:theme="@style/Theme.GameHubM" />
+        
+        <!-- Memory Game Activity -->
+        <activity
+            android:name=".ui.games.MemoryActivity"
+            android:exported="false"
+            android:label="Memory"
+            android:theme="@style/Theme.GameHubM" />
+        
+        <!-- Leaderboard Activity -->
+        <activity
+            android:name=".ui.leaderboard.LeaderboardActivity"
+            android:exported="false"
+            android:label="Leaderboard"
+            android:theme="@style/Theme.GameHubM" />
+            
+        <!-- RPS Activity -->
+        <activity
+            android:name=".ui.games.RpsActivity"
+            android:exported="false"
+            android:label="Rock Paper Scissors"
+            android:theme="@style/Theme.GameHubM" />
+            
+        <!-- Tic Tac Toe Activity -->
+        <activity
+            android:name=".ui.games.TicTacToeActivity"
+            android:exported="false"
+            android:label="Tic Tac Toe"
+            android:theme="@style/Theme.GameHubM" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -1,136 +1,206 @@
 package com.example.gamehub_m.ui.login;
 
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.util.Patterns;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.gamehub_m.R;
-import com.example.gamehub_m.ui.login.LoginViewModel;
-import com.example.gamehub_m.ui.login.LoginViewModelFactory;
-import com.example.gamehub_m.databinding.ActivityLoginBinding;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.gamehub_m.MainActivity;
+import com.example.gamehub_m.R;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+/**
+ * Login Activity - Handles user authentication with Firebase
+ */
 public class LoginActivity extends AppCompatActivity {
 
-    private LoginViewModel loginViewModel;
-    private ActivityLoginBinding binding;
+    private TextInputLayout emailInputLayout;
+    private TextInputLayout passwordInputLayout;
+    private TextInputEditText emailInput;
+    private TextInputEditText passwordInput;
+    private Button loginButton;
+    private ProgressBar loadingProgressBar;
+    private TextView createAccountLink;
+
+    private FirebaseAuth mAuth;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
-        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
+        // Check if already logged in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            navigateToMain();
+            return;
+        }
 
-        final EditText usernameEditText = binding.username;
-        final EditText passwordEditText = binding.password;
-        final Button loginButton = binding.login;
-        final ProgressBar loadingProgressBar = binding.loading;
+        // Initialize views
+        initViews();
+        setupListeners();
+    }
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+    private void initViews() {
+        emailInputLayout = findViewById(R.id.emailInputLayout);
+        passwordInputLayout = findViewById(R.id.passwordInputLayout);
+        emailInput = findViewById(R.id.username);
+        passwordInput = findViewById(R.id.password);
+        loginButton = findViewById(R.id.login);
+        loadingProgressBar = findViewById(R.id.loading);
+        createAccountLink = findViewById(R.id.createAccountLink);
+    }
+
+    private void setupListeners() {
+        // Text change listeners for validation
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
-            }
-        });
-
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
-                setResult(Activity.RESULT_OK);
-
-                //Complete and destroy login activity once successful
-                finish();
-            }
-        });
-
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                validateForm();
             }
         };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-                return false;
-            }
+        emailInput.addTextChangedListener(textWatcher);
+        passwordInput.addTextChangedListener(textWatcher);
+
+        // Login button click
+        loginButton.setOnClickListener(v -> attemptLogin());
+
+        // Create account link click
+        createAccountLink.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(intent);
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        });
+        // Forgot password click
+        TextView forgotPassword = findViewById(R.id.forgotPassword);
+        if (forgotPassword != null) {
+            forgotPassword.setOnClickListener(v -> sendPasswordResetEmail());
+        }
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+    private void validateForm() {
+        String email = emailInput.getText().toString().trim();
+        String password = passwordInput.getText().toString();
+
+        boolean isValid = true;
+
+        // Validate email
+        if (email.isEmpty()) {
+            emailInputLayout.setError(null);
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailInputLayout.setError(getString(R.string.invalid_username));
+            isValid = false;
+        } else {
+            emailInputLayout.setError(null);
+        }
+
+        // Validate password
+        if (password.isEmpty()) {
+            passwordInputLayout.setError(null);
+        } else if (password.length() < 6) {
+            passwordInputLayout.setError(getString(R.string.invalid_password));
+            isValid = false;
+        } else {
+            passwordInputLayout.setError(null);
+        }
+
+        // Enable login button only if valid
+        loginButton.setEnabled(isValid && !email.isEmpty() && !password.isEmpty());
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    private void attemptLogin() {
+        String email = emailInput.getText().toString().trim();
+        String password = passwordInput.getText().toString();
+
+        // Show loading
+        setLoading(true);
+
+        // Sign in with Firebase
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String displayName = user != null && user.getDisplayName() != null 
+                                ? user.getDisplayName() 
+                                : email.split("@")[0];
+                        Toast.makeText(this, getString(R.string.welcome) + displayName, Toast.LENGTH_SHORT).show();
+                        navigateToMain();
+                    } else {
+                        // Sign in failed
+                        setLoading(false);
+                        String errorMessage = task.getException() != null 
+                                ? task.getException().getMessage() 
+                                : getString(R.string.login_failed);
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+                        passwordInputLayout.setError(getString(R.string.login_failed));
+                    }
+                });
+    }
+
+    private void sendPasswordResetEmail() {
+        String email = emailInput.getText().toString().trim();
+        
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Please enter a valid email address first", Toast.LENGTH_SHORT).show();
+            emailInput.requestFocus();
+            return;
+        }
+
+        setLoading(true);
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    setLoading(false);
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Password reset email sent to " + email, Toast.LENGTH_LONG).show();
+                    } else {
+                        String error = task.getException() != null 
+                                ? task.getException().getMessage() 
+                                : "Failed to send reset email";
+                        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void setLoading(boolean isLoading) {
+        loadingProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        loginButton.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
+        emailInput.setEnabled(!isLoading);
+        passwordInput.setEnabled(!isLoading);
+    }
+
+    private void navigateToMain() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Exit app instead of going back
+        super.onBackPressed();
+        finishAffinity();
     }
 }

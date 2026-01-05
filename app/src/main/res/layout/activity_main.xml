@@ -4,144 +4,182 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0C0C0C"
+    android:background="#F20C0C0C"
     tools:context=".MainActivity">
 
-    <view
-        android:id="@+id/view"
-        class="com.google.android.material.navigation.NavigationView"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
+    <View
+        android:id="@+id/topBar"
+        android:layout_width="409dp"
+        android:layout_height="69dp"
         android:background="#DF000000"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GAMEHUB"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        android:textStyle="bold"
         android:fontFamily="@font/bruno_ace"
+        android:text="GAMEHUB"
         android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        android:textColor="#FFFFFF"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/topBar"
+        app:layout_constraintEnd_toEndOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="@id/topBar"
+        app:layout_constraintTop_toTopOf="@id/topBar"
+        app:layout_constraintVertical_bias="0.621" />
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.26"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/user_icon" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.764"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.526"
+    <ImageView
+        android:id="@+id/btnLeaderboard"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Leaderboard"
+        android:focusable="true"
+        android:padding="4dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/topBar"
+        app:layout_constraintEnd_toEndOf="@id/topBar"
+        app:layout_constraintTop_toTopOf="@id/topBar"
+        app:layout_constraintVertical_bias="0.655"
         app:srcCompat="@drawable/leaderboard_icon" />
 
-    <ImageButton
-        android:id="@+id/imageButton7"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton9"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:srcCompat="@drawable/guess_icon" />
+    <ImageView
+        android:id="@+id/btnUser"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="User Profile"
+        android:focusable="true"
+        android:padding="4dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="@id/topBar"
+        app:layout_constraintTop_toTopOf="@id/topBar"
+        app:layout_constraintVertical_bias="0.655"
+        app:srcCompat="@drawable/user_icon" />
 
-    <ImageButton
-        android:id="@+id/imageButton8"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="15dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton7"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:srcCompat="@drawable/rps_icon" />
-
-    <ImageButton
-        android:id="@+id/imageButton10"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton12"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.542"
-        app:layout_constraintStart_toEndOf="@+id/imageButton9"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton8"
-        app:srcCompat="@drawable/memory_icon" />
-
-    <ImageButton
-        android:id="@+id/imageButton9"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton11"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton10"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton7"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/tictactoe_icon" />
-
-    <ImageButton
-        android:id="@+id/imageButton12"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="15dp"
-        android:background="#00FFFFFF"
+    <!-- Game Grid Container - Centered vertically -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/gameGrid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.542"
-        app:layout_constraintStart_toEndOf="@+id/imageButton11"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton10"
-        app:layout_constraintVertical_bias="0.217"
-        app:srcCompat="@drawable/game_2048_icon" />
-
-    <ImageButton
-        android:id="@+id/imageButton11"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton9"
-        app:layout_constraintVertical_bias="0.217"
-        app:srcCompat="@drawable/snake_icon" />
+        app:layout_constraintTop_toBottomOf="@id/topBar">
+
+        <!-- Row 1 -->
+        <ImageView
+            android:id="@+id/btnGuess"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:contentDescription="Guess Game"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/btnRps"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/guess_icon" />
+
+        <ImageView
+            android:id="@+id/btnRps"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:contentDescription="Rock Paper Scissors"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/btnGuess"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnGuess"
+            app:layout_constraintTop_toTopOf="@id/btnGuess"
+            app:srcCompat="@drawable/rps_icon" />
+
+        <!-- Row 2 -->
+        <ImageView
+            android:id="@+id/btnTicTacToe"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:contentDescription="Tic Tac Toe"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/btnMemory"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnGuess"
+            app:srcCompat="@drawable/tictactoe_icon" />
+
+        <ImageView
+            android:id="@+id/btnMemory"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:contentDescription="Memory Game"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/btnTicTacToe"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnTicTacToe"
+            app:layout_constraintTop_toTopOf="@id/btnTicTacToe"
+            app:srcCompat="@drawable/memory_icon" />
+
+        <!-- Row 3 -->
+        <ImageView
+            android:id="@+id/btnSnake"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:contentDescription="Snake Game"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/btn2048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnTicTacToe"
+            app:srcCompat="@drawable/snake_icon" />
+
+        <ImageView
+            android:id="@+id/btn2048"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:contentDescription="2048 Game"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/btnSnake"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnSnake"
+            app:layout_constraintTop_toTopOf="@id/btnSnake"
+            app:srcCompat="@drawable/game_2048_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

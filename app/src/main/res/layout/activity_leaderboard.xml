@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    tools:context=".ui.leaderboard.LeaderboardActivity">
+
+    <!-- Top Bar -->
+    <View
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#DF000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Back"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintBottom_toBottomOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="@id/topBar"
+        app:layout_constraintTop_toTopOf="@id/topBar"
+        app:tint="@color/white" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bruno_ace"
+        android:text="LEADERBOARD"
+        android:textColor="@color/primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/topBar"
+        app:layout_constraintEnd_toEndOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="@id/topBar"
+        app:layout_constraintTop_toTopOf="@id/topBar" />
+
+    <!-- Game Filter ScrollView -->
+    <HorizontalScrollView
+        android:id="@+id/filterScroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingVertical="8dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <!-- All Games Chip - will be selected by default -->
+            <!-- We will use Buttons styled as Chips for simplicity and better touch targets -->
+            <Button
+                android:id="@+id/btnFilterGuess"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Guess Game"
+                android:textColor="@color/white"
+                app:strokeColor="@color/primary" />
+
+            <Button
+                android:id="@+id/btnFilterMemory"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Memory Game"
+                android:textColor="@color/white"
+                app:strokeColor="@color/text_secondary" />
+
+            <Button
+                android:id="@+id/btnFilterRps"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Rock Paper Scissors"
+                android:textColor="@color/white"
+                app:strokeColor="@color/text_secondary" />
+
+            <Button
+                android:id="@+id/btnFilterTicTacToe"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Tic Tac Toe"
+                android:textColor="@color/white"
+                app:strokeColor="@color/text_secondary" />
+
+            <Button
+                android:id="@+id/btnFilterSnake"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:enabled="false"
+                android:text="Snake (Soon)"
+                android:textColor="@color/text_secondary"
+                app:strokeColor="#333333" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Leaderboard List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/leaderboardRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterScroll"
+        tools:listitem="@layout/item_leaderboard" />
+
+    <!-- Loading ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/primary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar" />
+
+    <!-- Empty State Text -->
+    <TextView
+        android:id="@+id/emptyStateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No scores yet!\nBe the first to play."
+        android:textColor="@color/text_secondary"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
